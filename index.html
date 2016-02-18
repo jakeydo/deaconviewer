@@ -3,16 +3,17 @@
     <title>City Pres Deacon Interview Viewer</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,initial-scale=1.0">
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"> -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootswatch/3.3.6/spacelab/bootstrap.min.css">
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
 
     <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script> -->
 
 
 
@@ -28,7 +29,6 @@
       google.setOnLoadCallback(runQuery);
 
       function runQuery() {
-        // https://docs.google.com/spreadsheets/d/1dJ3xgnyEmugD-nOSTjUhke55bRR5FwfPswhvA6XAvdU/edit#gid=472742834
         var query = new google.visualization.Query("https://spreadsheets.google.com/tq?&tq=&key=1dJ3xgnyEmugD-nOSTjUhke55bRR5FwfPswhvA6XAvdU&gid=0");
         // query.setQuery('select dept, sum(salary) group by dept');
         query.send(handleQueryResponse);
@@ -67,6 +67,9 @@
             option.text = name;
             nameSelect.add(option);
           });
+          var nameDiv = document.getElementById('name_selector');
+          nameDiv.style.display = 'inline';
+          updateView();
           console.log(names);
 
         }
@@ -98,6 +101,14 @@
           }
 
         });
+        //
+        // //zoom out on mobile
+        // var viewport = document.querySelector('meta[name="viewport"]');
+        // if ( viewport ) {
+        //   viewport.content = "initial-scale=1.0";
+        //   // viewport.content = "width=1200";
+        // }
+
       };
 
       // Callback that creates and populates a data table,
@@ -129,19 +140,22 @@
     </script>
   </head>
 
-  <body>
+  <body style="padding-top:70px">
     <!--Div that will hold the pie chart-->
+    <nav class="navbar navbar-default navbar-fixed-top" id="name_selector" style="display:none">
+      <div class="container">
+        <form class="navbar-form navbar-right form-inline">
+          <div class="form-group">
+            <select class="form-control" id="name_select" onchange="updateView()">
+            </select>
+          </div>
+        </form>
+      </div>
+    </nav>
     <div class="container">
-      <div class="row" id="loading_div">Loading...</div>
+      <div class="row" id="loading_div"><h3>Loading <i class="fa fa-hourglass-half fa-spin"></i></h3></div>
       <div class="row" id="error_div" style="display:none">There was an error!</div>
       <div class="row" id="data_viewing_div" style="display:none">
-        <div class="form-group">
-          <div class="col-md-3 col-xs-12">
-            <label for="sel1">Select name:</label>
-            <select class="form-control" id="name_select" onchange="updateView()">
-            </select><br>
-          </div>
-        </div>
         <div id="interview_viewer">
         </div>
       </div>
